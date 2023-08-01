@@ -44,7 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Apps Django
-    'home'
+    'home',
+    
+    # 3rd
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
