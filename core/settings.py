@@ -14,7 +14,6 @@ import os
 import sys
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,9 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Apps Django
-    'home',
+    'blog'
+    'volunteers',
+    'contributors',
+    'authentication',
     
-    # 3rd
+    # DRF
     'rest_framework',
 ]
 
@@ -128,7 +130,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    'apps.authentication.backends',
+]
+
+AUTH_USER_MODEL = 'authentication.Users'
