@@ -17,7 +17,7 @@ class Contributors(models.Model):
 
 class ContributionHistory(models.Model):
     user = models.ForeignKey(Contributors, on_delete=models.DO_NOTHING)
-    value = models.DecimalField()
+    value = models.DecimalField(decimal_places=999, max_digits=9999999)
 
     created = models.DateTimeField(auto_now_add=True)
 
