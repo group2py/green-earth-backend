@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Apps Django
-    'blog'
+    'blog',
     'volunteers',
     'contributors',
     'authentication',
