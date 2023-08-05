@@ -1,9 +1,9 @@
-services:
-
-  app:
-    build: .
-    image: green-project-img
-    ports:
-      - 8000:8000
-    volumes:
-      - .:/app
+#services:
+#
+#  app:
+#    build: .
+#    image: green-project-img
+#    ports:
+#      - 8000:8000
+#    volumes:
+#      - .:/app
