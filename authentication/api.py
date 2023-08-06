@@ -20,12 +20,6 @@ from .serializers import UsersModelsSerializer
 from .utils import verify_password, validate_fields
 
 
-class ListUser(ListCreateAPIView):
-    queryset = Users.objects.all()
-    serializer_class = UsersModelsSerializer
-    permission_classes = [AllowAny]
-    
-
 class RegisterUser(ModelViewSet):
     # permission_classes = [IsAuthenticated, ]
     queryset = Users.objects.all()
@@ -60,7 +54,7 @@ class RegisterUser(ModelViewSet):
     def retrieve(self, request: HttpResponse, pk):
         user = get_object_or_404(Users, pk=pk)
 
-        if isinstance(user, Users):
+        if isinstance(user, Users):                
             reponse = {
                 'image': user.image,
                 'username': user.username,
@@ -75,7 +69,7 @@ class RegisterUser(ModelViewSet):
             serializer = self.get_serializer(reponse)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response({'instance error': 'User does not instance of Users'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'instance error': 'user is not an instance of Users'}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request: HttpResponse, pk=None):
         instance = self.get_object()
