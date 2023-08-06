@@ -21,14 +21,13 @@ class CreateVolunteers(ModelViewSet):
     queryset = Volunteers.objects.all()
     serializer_class = VolunteersModelsSerializers
 
-    def list(self, request: HttpResponse, *args: Any, **kwargs: Any):
+    def list(self, request: HttpResponse):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    def create(self, request: HttpResponse, *args: Any, **kwargs: Any):
+    def create(self, request: HttpResponse):
         queryset = self.filter_queryset(self.get_queryset())
-
         data = request.data
 
         if not validate_fields(data['help']):
@@ -37,11 +36,5 @@ class CreateVolunteers(ModelViewSet):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         create_volunteers = serializer.save()
-                
         return Response({'success': 'Registered successfully'}, status=status.HTTP_201_CREATED)
-
-    def datail():
-        pass
-
-    def update():
-        pass
+    
