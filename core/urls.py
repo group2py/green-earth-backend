@@ -15,6 +15,8 @@ from django.conf.urls.static import static
 
 # Registared routers
 router = routers.DefaultRouter()
+router.register(r'blog', api_blog.CreateBlogPost)
+router.register(r'media', api_blog.CreateMediaOng)
 router.register(r'users', api_authentication.RegisterUser)
 router.register(r'crime', api_blog.CreateCrimeDenunciations)
 router.register(r'list_volunteers', api_volunteers.CreateVolunteers)
@@ -26,8 +28,10 @@ urlpatterns = [
 
     # Routers api
     path('', include(router.urls)),
-    path('get_users/', api_authentication.ListUser.as_view()),
-    path('get_blog/', api_blog.CreateCrimeDenunciations.as_view(actions={'get': 'list'})),
+    path('get_blog/', api_blog.CreateBlogPost.as_view(actions={'get': 'list'})),
+    path('get_media/', api_blog.CreateMediaOng.as_view(actions={'get': 'list'})),
+    path('get_users/', api_authentication.RegisterUser.as_view(actions={'get': 'list'})),
+    path('get_crime/', api_blog.CreateCrimeDenunciations.as_view(actions={'get': 'list'})),
     path('get_volunteers/', api_volunteers.CreateVolunteers.as_view(actions={'get': 'list'})),
     path('get_contributors/', api_contributors.CreateContributors.as_view(actions={'get': 'list'})),
     path('get_contributors_history/', api_contributors.CreateContributionHistory.as_view(actions={'get': 'list'})),
