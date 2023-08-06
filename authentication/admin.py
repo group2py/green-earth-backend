@@ -11,7 +11,7 @@ class UsersAdmin(admin.ModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     model = Users
-    list_display = ("email","first_name", "last_name", "is_staff", "is_active")
+    list_display = ("username", "email", "first_name", "last_name", "is_staff", "is_active")
     fieldsets = django_user_admin.UserAdmin.fieldsets + (
         ('Personal data', {'fields': ("image", "gender", "phone", "recorevy_email")}),
     )

@@ -34,7 +34,9 @@ class RegisterUser(ModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
         data = request.data
 
-        if not validate_fields(data['email'], data['password'], data['gender']):
+        if not validate_fields(data['first_name'],
+                               data['email'],
+                               data['password']):
             return Response({'error': 'fields invalid'}, serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
         if not verify_password(request, data['password']):
@@ -42,12 +44,21 @@ class RegisterUser(ModelViewSet):
 
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+        
+        first_name = serializer.validated_data['first_name']
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
+
+        user = Users.objects.create_user(username=first_name,
+                                        first_name=first_name,
+                                        email=email,
+                                        password=password)
 
         token_JWT = RefreshToken.for_user(user)
         response = {
             'refresh': str(token_JWT),
             'access': str(token_JWT.access_token),
+            'account_create': 'Account created successfully',
         }
         return Response(response, status=status.HTTP_201_CREATED)
 
