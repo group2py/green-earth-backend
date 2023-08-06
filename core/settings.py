@@ -27,10 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-&%adwc^j=d-geavt&00&5c1)1!g+jrzq6zfo1mhi1m4v!0jv@m')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool, default=False)
+# DEBUG = config('DEBUG', cast=bool, default=False)
+DEBUG = True
 
-
-ALLOWED_HOSTS = ["green-earth.fly.dev", "localhost", "127.0.0.1"]
+# ALLOWED_HOSTS = ["green-earth.fly.dev", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -49,10 +50,12 @@ INSTALLED_APPS = [
     'authentication',
     
     # DRF
+    'corsheaders',
     'rest_framework',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,6 +66,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'core.urls'
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {
@@ -152,12 +156,10 @@ AUTH_USER_MODEL = 'authentication.Users'
 
 
 # DRF
-# settings.py
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
-    
 }
 
