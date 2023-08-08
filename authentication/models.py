@@ -68,7 +68,3 @@ class Users(AbstractUser):
 
     class Meta:
         verbose_name_plural = 'Users'
-
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    
