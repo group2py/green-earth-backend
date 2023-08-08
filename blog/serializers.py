@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import MediaOng, CrimeDenunciations, BlogPost
+from .models import MediaOng, CrimeDenunciations, BlogPost, NewMission
 
 
 class CrimeDenunciationsModelsSerializer(serializers.ModelSerializer):
@@ -15,4 +15,9 @@ class MediaOngModelsSerializer(serializers.ModelSerializer):
 class BlogPostModelsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogPost
+        fields = '__all__'
+
+class NewMissionModelsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewMission
         fields = '__all__'
