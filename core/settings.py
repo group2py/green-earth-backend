@@ -29,6 +29,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-&%adwc^j=d-geavt&00&5
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = config('DEBUG', cast=bool, default=False)
 DEBUG = True
+DOMAIN = config('DOMAIN', cast=str)
 
 # ALLOWED_HOSTS = ["green-earth.fly.dev", "localhost", "127.0.0.1"]
 ALLOWED_HOSTS = []
@@ -71,7 +72,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,7 +146,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 CSRF_TRUSTED_ORIGINS = ["https://green-earth.fly.dev"]
 
 AUTHENTICATION_BACKENDS = [
@@ -153,7 +153,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'authentication.Users'
-
 
 # DRF
 REST_FRAMEWORK = {
@@ -163,3 +162,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
 }
 
+# E-mail
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_BACKEND = config('EMAIL_BACKEND')
