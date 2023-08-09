@@ -1,0 +1,113 @@
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% tailwind_preload_css %}
+    {% tailwind_css %}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f5f5;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .header {
+            text-align: center;
+            font-size: 24px;
+            color: #2d6a4f;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .sub-header {
+            font-size: 18px;
+            color: #4b4b4b;
+            margin-bottom: 20px;
+        }
+        .image-container {
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .section-title {
+            font-size: 20px;
+            color: #2d6a4f;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .section-content {
+            font-size: 16px;
+            color: #4b4b4b;
+            margin-bottom: 15px;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #2d6a4f;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .footer {
+            font-size: 14px;
+            color: #888888;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Green Earth Newsletter
+        </div>
+        <div class="sub-header">
+            Stay connected with the latest updates and initiatives focused on preserving our planet.
+        </div>
+        <div class="image-container">
+            <img src="https://static.significados.com.br/foto/meio-ambiente-fb.jpg" alt="Environment">
+        </div>
+        <div class="section-title">
+            Recent News
+        </div>
+        <div class="section-content">
+            Discover our ongoing efforts to create a sustainable and greener world through our latest news updates.
+        </div>
+        <div>
+            <a href="#" class="cta-button">Read more</a>
+        </div>
+        <div class="section-title">
+            Upcoming Events
+        </div>
+        <div class="section-content">
+            Join us in our upcoming environmental events and contribute to positive change.
+        </div>
+        <div>
+            <a href="#" class="cta-button">View events</a>
+        </div>
+        <div class="section-title">
+            Take Action
+        </div>
+        <div class="section-content">
+            Make a real impact on the environment by getting involved in our initiatives.
+        </div>
+        <div>
+            <a href="#" class="cta-button">Get involved</a>
+        </div>
+        <div class="footer">
+            To unsubscribe from our newsletter, <a href="#">click here</a>.
+        </div>
+    </div>
+</body>
+
+</html>

@@ -5,7 +5,6 @@ import json
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 
@@ -18,7 +17,6 @@ from django.contrib.auth.tokens import default_token_generator
 
 # IMPORTS FILES APP
 from .models import Users, Genders
-from .activate_account import ActivateAccount
 from .serializers import UsersModelsSerializer
 from .utils import verify_password, validate_fields
 
@@ -121,3 +119,19 @@ class ActivateAccountView(APIView):
             return Response(response, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid activation link.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Não está funcionando o login ainda | Erro -> Não consegue filtrar usuário com base no e-mail e na senha
+class LoginUser(APIView):
+    def post(self, request: HttpResponse):
+        data = request.data
+        if not validate_fields(data['email'], data['password']):
+            return Response({'error': 'fields invalid'}, status=status.HTTP_400_BAD_REQUEST)
+        print(data['email'])
+        print(data['password'])
+        user = Users.objects.filter(email=data['email'], password=data['password']).first()
+        print(user)
+        # if user:
+        return Response({'success': 'user logged in successfully'}, status=status.HTTP_200_OK)
+        # else:
+        #     return Response({'error': 'invalid email or password'}, status=status.HTTP_400_BAD_REQUEST)

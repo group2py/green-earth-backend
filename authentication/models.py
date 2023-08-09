@@ -59,7 +59,7 @@ class Users(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.username
+        return self.email
     
     def save(self, *args, **kwargs):
         # TODO defenir imagem automatico
