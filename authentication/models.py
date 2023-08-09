@@ -1,6 +1,9 @@
+# from rest_framework import serializers
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import UserManager as BaseUsersManager
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
-from rest_framework import serializers
-from django.contrib.auth.models import UserManager as BaseUsersManager, AbstractUser
+from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUsersManager):
@@ -16,7 +19,7 @@ class UserManager(BaseUsersManager):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
-    
+
     def create_superuser(self, email=None, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -28,42 +31,55 @@ class UserManager(BaseUsersManager):
 
         return self._create_user(email, password, **extra_fields)
 
-class Genders(models.Model):
-    choice_gender = (
-        ('F', 'Femenine'),
-        ('M', 'Masculine'),
+
+class Users(AbstractUser):
+
+    class GenderChoices(models.TextChoices):
+        FEMENINE = 'F', 'Femenine'
+        MASCULINE = 'M', 'Masculine'
+
+    username_validator = UnicodeUsernameValidator()
+
+    username = models.CharField(
+        _("username"),
+        max_length=150,
+        unique=False,
+        help_text=_(
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."  # noqa: E501
+        ),
+        validators=[username_validator],
+        error_messages={
+            "unique": _("A user with that username already exists."),
+        },
+    )
+
+    email = models.EmailField(
+        _("email address"),
+        blank=False,
+        unique=True
+    )
+
+    image = models.ImageField(
+        upload_to='image_profile'
     )
 
     gender = models.CharField(
         max_length=1,
-        choices=choice_gender
+        choices=GenderChoices.choices,
+        blank=True,
+        null=True
     )
-
-    def __str__(self):
-        return self.gender
-
-    class Meta:
-        verbose_name_plural = 'Genders'
-
-class Users(AbstractUser):
-    username = models.CharField(max_length=150, unique=False)
-    email = models.EmailField(unique=True)
-    image = models.ImageField(upload_to='image_profile')
-    gender = models.ForeignKey(Genders, on_delete=models.DO_NOTHING, blank=True, null=True)
     phone = models.IntegerField(blank=True, null=True)
-    recorevy_email = models.EmailField(blank=True, null=True)
-
-    EMAIL_FIELD = "email"
-    USERNAME_FIELD = "username"
+    recovery_email = models.EmailField(blank=True, null=True)
 
     objects = UserManager()
 
     def __str__(self):
         return self.email
-    
+
     def save(self, *args, **kwargs):
-        # TODO defenir imagem automatico
-        # self.image = 
+        # Todo defenir imagem automatico
+        # self.image =
         super(Users, self).save(*args, **kwargs)
 
     class Meta:
