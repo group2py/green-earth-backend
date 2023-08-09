@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+# import sys
 import os
-import sys
 from pathlib import Path
 
 from decouple import config
@@ -24,7 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-&%adwc^j=d-geavt&00&5c1)1!g+jrzq6zfo1mhi1m4v!0jv@m')
+SECRET_KEY = config(
+    'SECRET_KEY',
+    default='django-insecure-&%adwc^j=d-geavt&00&5c1)1!g+jrzq6zfo1mhi1m4v!0jv@m'  # noqa: E501
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = config('DEBUG', cast=bool, default=False)
@@ -32,7 +35,7 @@ DEBUG = True
 DOMAIN = config('DOMAIN', cast=str)
 
 # ALLOWED_HOSTS = ["green-earth.fly.dev", "localhost", "127.0.0.1"]
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  # type: ignore
 
 # Application definition
 
@@ -44,15 +47,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Apps Django
-    'blog',
-    'volunteers',
-    'contributors',
-    'authentication',
-    
     # DRF
     'corsheaders',
     'rest_framework',
+
+    # Simple JWT
+    'rest_framework_simplejwt',
+
+    # Apps Django
+    'authentication',
+    'blog',
+    'contributors',
+    'volunteers'
 ]
 
 MIDDLEWARE = [
@@ -105,16 +111,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',  # noqa: E501
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',  # noqa: E501
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',  # noqa: E501
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',  # noqa: E501
     },
 ]
 
@@ -122,9 +128,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-BR'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
