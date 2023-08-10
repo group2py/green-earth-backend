@@ -170,13 +170,13 @@ class LoginUser(APIView):
     def post(self, request: HttpResponse):
         data = request.data
 
-        if not validate_fields(data['username'], data['password']):
+        if not validate_fields(data['email'], data['password']):
             return Response(
                 {'error': 'fields invalid'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        user = authenticate(username=data['email'], password=data["password"])
+        user = CustomBackends().authenticate(request, username=data['email'], password=data["password"])
         print(user)
         if user is None:
             return Response(
