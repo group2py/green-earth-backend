@@ -5,9 +5,9 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+
 # IMPORTS DJANGO REST FRAMEWORK
 from rest_framework import status
-# from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -51,10 +51,18 @@ class RegisterUser(APIView):
 
         serializer = UsersModelsSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        user = serializer.save()
+
+        token_JWT = RefreshToken.for_user(user)
+        response = {
+            'refresh': str(token_JWT),
+            'access': str(token_JWT.access_token),
+            'account_activated': 'Account activated successfully',
+            'success': 'Account created successfully',
+        }
 
         return Response(
-            {'success': 'Account created successfully'},
+            response,
             status=status.HTTP_201_CREATED
         )
 
@@ -156,13 +164,8 @@ class ActivateAccountView(APIView):
             user.is_active = True
             user.save()
 
-            token_JWT = RefreshToken.for_user(user)
-            response = {
-                'refresh': str(token_JWT),
-                'access': str(token_JWT.access_token),
-                'account_activated': 'Account activated successfully',
-            }
-            return Response(response, status=status.HTTP_200_OK)
+            
+            return Response({'test': 'rtest'}, status=status.HTTP_200_OK)
         else:
             return Response(
                 {'error': 'Invalid activation link.'},
