@@ -14,6 +14,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # IMPORTS FILES APP
 from .models import Users
+from .backends import CustomBackends
 from .serializers import UsersModelsSerializer
 from .utils import validate_fields, verify_password
 
@@ -53,16 +54,8 @@ class RegisterUser(APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        token_JWT = RefreshToken.for_user(user)
-        response = {
-            'refresh': str(token_JWT),
-            'access': str(token_JWT.access_token),
-            'account_activated': 'Account activated successfully',
-            'success': 'Account created successfully',
-        }
-
         return Response(
-            response,
+            {'success': 'Account created successfully'},
             status=status.HTTP_201_CREATED
         )
 
@@ -164,8 +157,7 @@ class ActivateAccountView(APIView):
             user.is_active = True
             user.save()
 
-            
-            return Response({'test': 'rtest'}, status=status.HTTP_200_OK)
+            return Response({'account_activated': 'Account activated successfully',}, status=status.HTTP_200_OK)
         else:
             return Response(
                 {'error': 'Invalid activation link.'},
@@ -178,21 +170,28 @@ class LoginUser(APIView):
     def post(self, request: HttpResponse):
         data = request.data
 
-        if not validate_fields(data['email'], data['password']):
+        if not validate_fields(data['username'], data['password']):
             return Response(
                 {'error': 'fields invalid'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+        
         user = authenticate(username=data['email'], password=data["password"])
-
+        print(user)
         if user is None:
             return Response(
                 {'error': 'invalid email or password'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        token_JWT = RefreshToken.for_user(user)
+        response = {
+            'refresh': str(token_JWT),
+            'access': str(token_JWT.access_token),
+            'success': 'user logged in successfully',
+            
+        }
         return Response(
-            {'success': 'user logged in successfully'},
+            response,
             status=status.HTTP_200_OK
         )

@@ -17,7 +17,6 @@ class CustomBackends(ModelBackend):
         except UserModel.DoesNotExist:
             return
         
-        
         if user.exists():
             my_user = user.first()
             if my_user.check_password(password):
