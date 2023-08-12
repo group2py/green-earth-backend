@@ -1,16 +1,19 @@
+# IMPORTS PYTHON
+import jwt
+
 # IMPORTS DJANGO
-from django.contrib.auth import authenticate
-from django.contrib.auth.tokens import default_token_generator
+from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_str
+from django.shortcuts import get_object_or_404
 from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
 
 # IMPORTS DJANGO REST FRAMEWORK
 from rest_framework import status
-from rest_framework.response import Response
+from rest_framework import response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.response import Response
 
 # IMPORTS FILES APP
 from .models import Users
@@ -19,13 +22,19 @@ from .serializers import UsersModelsSerializer
 from .utils import validate_fields, verify_password
 
 
-class ListUsers(APIView):
+# Create token user jwt
+def create_token(user_id: int) -> str:
+    payload = dict(
+        id=user_id,
+    )
+    token = jwt.encode(payload, settings.SECRET_KEY_JWT, algorithm="HS256")
+    return token
 
+class ListUsers(APIView):
     def get(self, request: HttpResponse):
         users = Users.objects.all()
         serializer = UsersModelsSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class RegisterUser(APIView):
 
@@ -59,7 +68,6 @@ class RegisterUser(APIView):
             status=status.HTTP_201_CREATED
         )
 
-
 class UserDetails(APIView):
 
     def get(self, request: HttpResponse, pk):
@@ -71,6 +79,7 @@ class UserDetails(APIView):
                 'username': user.username,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
+                "password": user.password,
                 'email': user.email,
                 'password': user.password,
                 'gender': user.gender,
@@ -84,7 +93,6 @@ class UserDetails(APIView):
                 {'instance error': 'user is not an instance of Users'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
 
 class UserUpdate(APIView):
 
@@ -127,7 +135,6 @@ class UserUpdate(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-
 class UserDelete(APIView):
 
     def delete(self, request: HttpResponse, pk, *args, **kwargs):
@@ -144,7 +151,6 @@ class UserDelete(APIView):
                 {'instance error': 'User does not instance of Users'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
 
 class ActivateAccountView(APIView):
 
@@ -164,9 +170,7 @@ class ActivateAccountView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-
 class LoginUser(APIView):
-
     def post(self, request: HttpResponse):
         data = request.data
 
@@ -177,21 +181,13 @@ class LoginUser(APIView):
             )
         
         user = CustomBackends().authenticate(request, username=data['email'], password=data["password"])
-        print(user)
         if user is None:
             return Response(
                 {'error': 'invalid email or password'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        token_JWT = RefreshToken.for_user(user)
-        response = {
-            'refresh': str(token_JWT),
-            'access': str(token_JWT.access_token),
-            'success': 'user logged in successfully',
-            
-        }
-        return Response(
-            response,
-            status=status.HTTP_200_OK
-        )
+        token = create_token(user_id=user.pk)
+        resp = response.Response({'success': 'user logged in successfully', 'token': token})
+
+        return resp
