@@ -16,6 +16,7 @@ from pathlib import Path
 
 from decouple import config
 from dj_database_url import parse as db_url
+from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-&%adwc^j=d-geavt&00&5c1)1!g+jrzq6zfo1mhi1m4v!0jv@m')
+SECRET_KEY_JWT = '2fs&5ug*bn1@^ii^xph&xwy3+ex*#i8gn(z@fxecaxlnj6810g'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = config('DEBUG', cast=bool, default=False)
@@ -37,6 +40,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Libraries Django
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,7 +61,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'middlewares.middleware_jwt.jwt_middleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -135,8 +139,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = BASE_DIR / "static"
-STATIC_URL = 'static/'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -170,3 +175,10 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_BACKEND = config('EMAIL_BACKEND')
+
+# Configurações do Django Jazzmin
+JAZZMIN_SETTINGS = {
+    "site_title": "Administração Green Earth",
+    "site_logo": "adminlte/img/logo.png",
+    "welcome_sign": "Bem-vindo(a) ao Django Jazzmin",
+}
