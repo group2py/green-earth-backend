@@ -26,7 +26,7 @@ def browser():
     browser.get(url)
   
    
-    sleep(3)
+    sleep(2)
     return browser
 
 @pytest.fixture

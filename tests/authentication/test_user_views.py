@@ -46,7 +46,7 @@ def test_user_delete_deve_retornar_200(client,user_created):
     assert response.status_code == 200
 
 
-@pytest.mark.skip(reason="Melhorar o sistema de validação de usuário, como por exemplo, um regex básico no username e phone")
+@pytest.mark.skip(reason="Melhorar o sistema de validação de usuário, como por exemplo, um regex básico no username")
 @pytest.mark.django_db
 def test_cadastra_usuario_invalido_entao_deve_retornar_400(client):
     image_path = os.path.join(settings.BASE_DIR, "static","authentication",  'img', 'profile.png')
