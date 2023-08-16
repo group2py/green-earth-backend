@@ -39,7 +39,7 @@ def test_user_get_deve_retornar_200(client,user_created):
     response = client.get(f'/auth/users/{user_created.id}/get/')
     assert response.status_code == 200
 
-@pytest.mark.teste
+# @pytest.mark.teste
 @pytest.mark.django_db
 def test_user_delete_deve_retornar_200(client,user_created):
     response = client.delete(f'/auth/users/{user_created.id}/delete/')
