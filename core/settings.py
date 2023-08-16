@@ -35,7 +35,7 @@ DEBUG = True
 DOMAIN = config('DOMAIN', cast=str)
 
 # ALLOWED_HOSTS = ["green-earth.fly.dev", "localhost", "127.0.0.1"]
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['testserver']
 
 # Application definition
 

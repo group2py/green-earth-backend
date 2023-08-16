@@ -23,7 +23,8 @@ from core import settings
 image_path = os.path.join(settings.BASE_DIR,  "static" , "authentication" ,  'img', 'profile.png')
 data_image = SimpleUploadedFile(name='livros.png', content=open(image_path, 'rb').read(),content_type='image/png')
 
-
+# import pytest
+# @pytest.mark.django_db
 class UserModel:
     def __init__(self,username,email,image,phone,password,gender,first_name,
                  last_name,recovery_email):
@@ -36,7 +37,7 @@ class UserModel:
         self.first_name=first_name
         self.last_name=last_name
         self.recovery_email=recovery_email
-
+# @pytest.mark.django_db
 def user_data_serializer(user_data:UserModel):
     data = {
         "username":user_data.username,
@@ -50,6 +51,7 @@ def user_data_serializer(user_data:UserModel):
         "recovery_email":user_data.recovery_email
 }
     return data
+# @pytest.mark.django_db
 class UserFactory(Factory):
     class Meta:
         model = UserModel
@@ -63,20 +65,22 @@ class UserFactory(Factory):
     last_name =faker.name(),
     recovery_email = faker.email()
 
+# @pytest.mark.django_db
 def register_user_in_the_database():
     data = UserFactory.create()
     data = data.__dict__
-    client.post("/auth/register/", data=data)
+    # client.post("/auth/register/", data=data)
+    Users.objects.create_user(data['email'][0], data['password'][0])
     user = get_object_or_404(Users, email=data['email'][0])
     return user
 
-def register_users_in_the_database(number_of_registrations:int):
-    data = UserFactory.create_batch(number_of_registrations)
-    database_list = []
-    for i in range(len(data)):
-        data[i] = data[i].__dict__
-        client.post("/auth/register/", data=data[i])
-        print(data[i]['email'])
-        user = get_object_or_404(Users, email=data[i]['email'][0])
-        database_list.append(user)
-    return database_list
+# def register_users_in_the_database(number_of_registrations:int):
+#     data = UserFactory.create_batch(number_of_registrations)
+#     database_list = []
+#     for i in range(len(data)):
+#         data[i] = data[i].__dict__
+#         client.post("/auth/register/", data=data[i])
+#         print(data[i]['email'])
+#         user = get_object_or_404(Users, email=data[i]['email'][0])
+#         database_list.append(user)
+#     return database_list

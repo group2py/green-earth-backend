@@ -2,16 +2,12 @@ import pytest
 #adding path to parent directory
 import os
 import sys
-parent_path = os.path.join(os.path.abspath('__path__'), '..','..')
+parent_path = os.path.join(os.path.abspath('__path__'),'..', '')
 sys.path.append(parent_path)
 
 from authentication.models import Users
 #faker
 from faker import Faker
-
-#image
-from django.core.files.uploadedfile import SimpleUploadedFile
-from core import settings
 #selenium
 from time import sleep
 from selenium.webdriver import Chrome
@@ -21,7 +17,9 @@ from selenium.webdriver import Chrome
 from django.shortcuts import get_object_or_404
 from django.test import Client
 #authentication_factory
-from authentication_factory import UserFactory, register_user_in_the_database
+from tests.authentication.authentication_factory import UserFactory, register_user_in_the_database
+# from tests.volunteers.volunteer_factory import register_volunteer_in_database
+
 
 @pytest.fixture
 def user_data():
@@ -61,10 +59,12 @@ def client():
     client = Client()    
     return client
 
+@pytest.mark.django_db
 @pytest.fixture
 def user_created():
     # client.post("/auth/register/", data=user_data)
     # user = get_object_or_404(Users, email=user_data['email'][0])
 
-    list_users = register_user_in_the_database()
-    return list_users
+    user = register_user_in_the_database()
+    return user
+
