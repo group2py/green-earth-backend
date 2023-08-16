@@ -1,10 +1,11 @@
 import os
 import sys
-import json
-
 parent_path = os.path.join(os.path.abspath('__path__'), '..','..')
 sys.path.append(parent_path)
 from authentication.models import Users
+
+from django.shortcuts import get_object_or_404
+
 
 from core import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -34,34 +35,16 @@ def test_list_users_deve_retornar_200(client):
 
 @pytest.mark.teste
 @pytest.mark.django_db
-def test_user_get_deve_retornar_200(client, user_data):
-    client.post( '/auth/register/', data=user_data)
-
-    response = client.get('/auth/users/1/get/')
+def test_user_get_deve_retornar_200(client,user_created):
+    response = client.get(f'/auth/users/{user_created.id}/get/')
     assert response.status_code == 200
 
-
-@pytest.mark.django_db
-def test_user_get_deve_retornar_200(client, user_data):
-    client.post( '/auth/register/', data=user_data)
-    response = client.get('/auth/users/1/get/')
-    assert response.status_code == 200
-
-@pytest.mark.django_db
-@pytest.mark.skip(reason="mesmo informando o id correto, está retornando erro 405")
-def test_user_delete_deve_retornar_200(client, user_data):
-    client.post('/auth/register/', data=user_data)
-    user_id = Users.objects.filter(email=user_data['email']).first().id
-    print(user_id)
-    response = client.get(f'/auth/users/{user_id}/delete/')
-    assert response.status_code == 200
-    
 @pytest.mark.teste
 @pytest.mark.django_db
-def test_user_get_deve_retornar_200(client, user_data):
-    client.post( '/auth/register/', data=user_data)
-    response = client.get('/auth/users/1/get/')
+def test_user_delete_deve_retornar_200(client,user_created):
+    response = client.delete(f'/auth/users/{user_created.id}/delete/')
     assert response.status_code == 200
+
 
 @pytest.mark.skip(reason="Melhorar o sistema de validação de usuário, como por exemplo, um regex básico no username e phone")
 @pytest.mark.django_db
@@ -82,19 +65,9 @@ def test_cadastra_usuario_invalido_entao_deve_retornar_400(client):
     assert response.status_code == 400
 
 
-@pytest.mark.skip(reason="Mudar o update de usuários de put ")
+
+@pytest.mark.skip(reason='Está retornando o erro 415')
 @pytest.mark.django_db
-def test_user_update_deve_retornar_200(client, user_data):
-    client.post( '/auth/register/', data=user_data)
-# {
-#     "id": 2,
-#     "username": "admin",
-#     "first_name": "admin",
-#     "last_name": "admin",
-#     "email": "admin@admin.com",
-#     "gender": "M",
-#     "phone": 998912819,
-#     "recovery_email": admin@admin.com
-# }
-    response = client.post('/auth/users/1/update/')
+def test_user_update_deve_retornar_200(client, user_data,user_created):
+    response = client.put(f'/auth/users/{user_created.id}/update/', data=user_data)
     assert response.status_code == 200

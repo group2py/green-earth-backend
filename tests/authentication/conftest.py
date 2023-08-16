@@ -16,6 +16,9 @@ from time import sleep
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 
+from django.shortcuts import get_object_or_404
+
+
 @pytest.fixture
 def browser():
     browser = Chrome()
@@ -35,15 +38,23 @@ def user_data():
     data =  {
         "username": faker.name(),
         "email": faker.email(),
-        "image": data_image,
+        "image":data_image,
         "phone": 9989122819,
         "password": "Aa12aZ3352345&@%",
         "gender": "M",
         "first_name":faker.name(),
         "last_name":faker.name(),
+        "recovery_email": faker.email()
     }
     return data
 @pytest.fixture
 def client():
     client = Client()    
     return client
+
+@pytest.fixture
+def user_created(client, user_data):
+    client.post( '/auth/register/', data=user_data)
+    client_created = get_object_or_404(Users, email=user_data['email'])
+    print(client_created.id)
+    return client_created
