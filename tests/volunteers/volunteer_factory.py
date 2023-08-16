@@ -44,7 +44,7 @@ class VolunteerFactory(Factory):
     class Meta:
         model=VolunteerModel
 
-    user = register_user_in_the_database()
+    user = register_user_in_the_database()#ta dando problema nessa linha, pelo que entendi ele não está recebendo a permissão do "@pytest.mark.django_db"
     help = faker.text() 
     created = faker.date_time()
 
