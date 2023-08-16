@@ -49,7 +49,7 @@ def test_login_the_user_then_must_go_to_the_dashboard(browser):
     browser.find_element(by=By.XPATH, value='//*[@id="navbarNavDropdown"]/ul/li[3]/a').click()
     sleep(2)
     browser.find_element(by=By.XPATH, value='//*[@id="root"]/div[1]/div/form/div/div/input').send_keys("admin@admin.com")
-    browser.find_element(by=By.XPATH, value='//*[@id="root"]/div[1]/div/form/div/div/div[2]/input').send_keys("Admin123!")
+    browser.find_element(by=By.XPATH, value='//*[@id="root"]/div[1]/div/form/div/div/div[2]/input').send_keys("Aa12aZ3352345&@%")
     browser.find_element(by=By.XPATH, value='//*[@id="root"]/div[1]/div/form/div/div/div[3]/input').click()
     sleep(2)
     assert browser.current_url == "https://courageous-jalebi-621420.netlify.app/dashboard"   

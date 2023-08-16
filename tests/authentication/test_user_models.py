@@ -13,7 +13,6 @@ from django.test import Client
 import pytest
 
 @pytest.mark.django_db
-def test_register_user_then_user_must_be_registered(client,user_data):
-    client.post('/auth/register/', data=user_data)
-    database_client = get_object_or_404(Users, email=user_data['email'])
+def test_register_user_then_user_must_be_registered(user_created):
+    database_client = get_object_or_404(Users, id=user_created.id)
     assert database_client

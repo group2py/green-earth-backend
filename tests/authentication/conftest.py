@@ -62,7 +62,7 @@ def client():
     return client
 
 @pytest.fixture
-def user_created(client, user_data):
+def user_created():
     # client.post("/auth/register/", data=user_data)
     # user = get_object_or_404(Users, email=user_data['email'][0])
 
