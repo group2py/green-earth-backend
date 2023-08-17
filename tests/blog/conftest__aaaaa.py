@@ -1,10 +1,11 @@
 import pytest
-#adding path to parent directory
+# adding path to parent directory
 import os
 import sys
-parent_path = os.path.join(os.path.abspath('__path__'), '..','..')
+
+parent_path = os.path.join(os.path.abspath('__path__'), '..', '..')
 sys.path.append(parent_path)
-from tests.conftest import user_created 
+from tests.conftest import user_created
 
 from authentication.models import Users
 from django.test import Client
@@ -25,10 +26,10 @@ def browser():
     browser = Chrome()
     url = "https://courageous-jalebi-621420.netlify.app/"
     browser.get(url)
-  
-   
+
     sleep(2)
     return browser
+
 
 # @pytest.fixture
 # def user_data():
@@ -50,12 +51,10 @@ def browser():
 #     return data
 
 @pytest.fixture
-
 @pytest.fixture
 def client():
-    client = Client()    
+    client = Client()
     return client
-
 
 
 # @pytest.fixture
@@ -68,10 +67,10 @@ def client():
 def post_data(user_created):
     faker = Faker()
     data = {
-        "owner":user_created,
+        "owner": user_created,
         "title": faker.text(),
         "description": faker.text(),
-        "state":faker.state(),
-        "city":faker.city(),
+        "state": faker.state(),
+        "city": faker.city(),
     }
-    #.strftime('%d_%m_%Y %H:%M')
+    # .strftime('%d_%m_%Y %H:%M')
