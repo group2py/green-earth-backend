@@ -12,7 +12,7 @@ import sys
 from faker import Faker
 parent_path = os.path.join(os.path.abspath('__path__'), '..','..')
 sys.path.append(parent_path)
-from contributors.models import Contributors
+from contributors.models import Contributors, ContributionHistory
 from tests.authentication.conftest import user_created,user_data
 from authentication.models import Users
 import json
@@ -70,9 +70,9 @@ def contributors_history_data(client,user_created):
     return data
 @pytest.fixture
 def contributors_history_created(client,contributors_history_data):
-    client.post('create_contributors_history/', data=contributors_history_data)
+    client.post('/contributors/create_contributors_history/', data=contributors_history_data)
    
-    contributor_history = get_object_or_404(Contributors, user=['user']
+    contributor_history = get_object_or_404(ContributionHistory, user=contributors_history_data['user']
                                      )
    
   
