@@ -59,15 +59,10 @@ def client():
     client = Client()    
     return client
 
-# @pytest.mark.django_db
+
 @pytest.fixture
 def user_created(client, user_data):
-
-    print(client.post("/auth/register/", data=user_data))
-
-    
+    client.post("/auth/register/", data=user_data)
     user = get_object_or_404(Users, email=user_data['email'])
-
-    
     return user
 
