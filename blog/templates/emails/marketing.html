@@ -1,10 +1,7 @@
-{% load tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    {% tailwind_preload_css %}
-    {% tailwind_css %}
     <style>
         body {
             margin: 0;
@@ -64,12 +61,31 @@
             text-align: center;
             margin-top: 20px;
         }
+        .div-container {
+            display: flex;
+            flex-direction: row;
+        }
+        .div-left,
+        .div-right {
+            width: 50%;
+            padding: 10px;
+        }
+        .div-right {
+            background-color: #eaf3f3;
+        }
+        .message-div {
+            background-color: #f5e6c4;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
     </style>
 </head>
-<body>
+
+<body style="border: 2px solid rgb(60, 97, 5); background-color: #2d6a4f; border-radius: 5%;">
     <div class="container">
         <div class="header">
-            Green Earth Newsletter
+            Green Earth
         </div>
         <div class="sub-header">
             Stay connected with the latest updates and initiatives focused on preserving our planet.
@@ -77,23 +93,29 @@
         <div class="image-container">
             <img src="https://static.significados.com.br/foto/meio-ambiente-fb.jpg" alt="Environment">
         </div>
-        <div class="section-title">
-            Recent News
-        </div>
-        <div class="section-content">
-            Discover our ongoing efforts to create a sustainable and greener world through our latest news updates.
-        </div>
-        <div>
-            <a href="#" class="cta-button">Read more</a>
-        </div>
-        <div class="section-title">
-            Upcoming Events
-        </div>
-        <div class="section-content">
-            Join us in our upcoming environmental events and contribute to positive change.
-        </div>
-        <div>
-            <a href="#" class="cta-button">View events</a>
+        <div class="div-container">
+            <div class="div-left">
+                <div class="section-title">
+                    Recent News
+                </div>
+                <div class="section-content">
+                    Discover our ongoing efforts to create a sustainable and greener world through our latest news updates.
+                </div>
+                <div>
+                    <a style="text-decoration: none; color: white;" href="#" class="cta-button">Read more</a>
+                </div>
+            </div>
+            <div class="div-right">
+                <div class="section-title">
+                    Upcoming Events
+                </div>
+                <div class="section-content">
+                    Join us in our upcoming environmental events and contribute to positive change.
+                </div>
+                <div>
+                    <a style="text-decoration: none; color: #2d6a4f;" href="#" class="cta-button">View events</a>
+                </div>
+            </div>
         </div>
         <div class="section-title">
             Take Action
@@ -102,7 +124,11 @@
             Make a real impact on the environment by getting involved in our initiatives.
         </div>
         <div>
-            <a href="#" class="cta-button">Get involved</a>
+            <a style="text-decoration: none; color: white;" href="#" class="cta-button">Get involved</a>
+        </div>
+        <div class="message-div">
+            <p>Thank {{username}} you for your support! Join us in making a difference.</p>
+            <a style="text-decoration: none; color: #2d6a4f;" href="#" class="cta-button">Visit Our Website</a>
         </div>
         <div class="footer">
             To unsubscribe from our newsletter, <a href="#">click here</a>.

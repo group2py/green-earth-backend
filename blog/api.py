@@ -16,6 +16,8 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
 # DJANGO
+from django.urls import reverse
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -25,8 +27,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 # FILES APPS IMPORTS
 from .utils import validate_fields, check_image
-from .models import CrimeDenunciations, BlogPost, MediaOng#,FinancialResources
-from .serializers import CrimeDenunciationsModelsSerializer, BlogPostModelsSerializer, MediaOngModelsSerializer#, FinancialResourcesSerializer
+from .models import CrimeDenunciations, BlogPost, MediaOng, FinancialResources
+from .serializers import CrimeDenunciationsModelsSerializer, BlogPostModelsSerializer, MediaOngModelsSerializer, FinancialResourcesSerializer
 
 
 # LIST OBJECTS
@@ -48,11 +50,11 @@ class ListMediaOng(APIView):
         serializers = MediaOngModelsSerializer(users, many=True)
         return Response(serializers.data, status=status.HTTP_200_OK)
 
-# class ListFinancialResources(APIView):
-#     def get(self, request: HttpResponse):
-#         users_financial = FinancialResources.objects.all()
-#         serializers = FinancialResourcesSerializer(users_financial, many=True)
-#         return Response(serializers.data, status=status.HTTP_200_OK)
+class ListFinancialResources(APIView):
+    def get(self, request: HttpResponse):
+        users_financial = FinancialResources.objects.all()
+        serializers = FinancialResourcesSerializer(users_financial, many=True)
+        return Response(serializers.data, status=status.HTTP_200_OK)
 
 
 # CREATE OBJECTS
@@ -67,7 +69,6 @@ class CreateCrimeDenunciations(APIView):
         serializer = CrimeDenunciationsModelsSerializer(data=data)
         serializer.is_valid(raise_exception=True)
 
-        create_crime_denunciations = serializer.save()
         create_crime_denunciations = serializer.save()
         return Response({'success': 'Reported successfully!'}, status=status.HTTP_201_CREATED)
 
@@ -98,20 +99,20 @@ class CreateMediaOng(APIView):
         create_media_ong = serializer.save()
         return Response({'success': 'Media created successfully!'}, status=status.HTTP_201_CREATED)
 
-# class CreateFinancialResources(APIView):
-#     def post(self, request: HttpResponse):
-#         data = request.data
+class CreateFinancialResources(APIView):
+    def post(self, request: HttpResponse):
+        data = request.data
 
-#         if not validate_fields(data['title'], data['description']):
-#             return Response({'error': 'fields invalid'}, status=status.HTTP_400_BAD_REQUEST)
+        if not validate_fields(data['title'], data['description']):
+            return Response({'error': 'fields invalid'}, status=status.HTTP_400_BAD_REQUEST)
             
-#         serializer = FinancialResourcesSerializer(data=data)
-#         serializer.is_valid(raise_exception=True)
+        serializer = FinancialResourcesSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
 
-#         create_financial_resources = serializer.save()
-#         return Response({'success': 'Financial resources created successfully!'}, status=status.HTTP_201_CREATED)
+        create_financial_resources = serializer.save()
+        return Response({'success': 'Financial resources created successfully!'}, status=status.HTTP_201_CREATED)
 
-# # PICK UP AN OBJECTS
+# PICK UP AN OBJECTS
 class GetCrimeDenunciations(APIView):
     def get(self, request: HttpResponse, pk):
         denunciations = get_object_or_404(CrimeDenunciations, pk=pk)
@@ -246,21 +247,16 @@ class DeleteBlogPost(APIView):
 
 # PDF Generate and Receive
 class PdfGenerate(APIView):
-
     def post(self, request: HttpResponse):
         data = request.data
-        print('Dados: ',data)
-
         if not validate_fields(data['email']):
             return Response({'error': 'field invalid'}, status=status.HTTP_400_BAD_REQUEST)
         
         email_hash = sha256(data['email'].encode()).hexdigest()
-        file_path = os.path.join('pdf', f'{email_hash}.pdf')
+        file_path = os.path.join('media', 'pdf', f'{email_hash}.pdf')
 
         buffer = BytesIO()
-
         p = canvas.Canvas(buffer, pagesize=letter)
-
         p.setFont("Helvetica", 12)
 
         p.drawString(20, 750, "CONTRATO DE PARCERIA ENTRE A ONG DE MEIO AMBIENTE E O USUÁRIO")
@@ -313,7 +309,7 @@ class PdfGenerate(APIView):
         p.drawString(20, 45, "parceria estabelecida e substitui todos os acordos anteriores, se houver. Este Contrato pode")
         p.drawString(20, 30, "ser modificado somente por escrito e assinado por ambas as partes.")
         
-        p.drawString(20, 15, f"Assinado e aceito em Data: {datetime.now().day}/{datetime.now().month}/{datetime.now().year}/")
+        p.drawString(20, 15, f"Assinado e aceito em {datetime.now().day}/{datetime.now().month}/{datetime.now().year}/")
         p.save()
 
         pdf = buffer.getvalue()
@@ -323,21 +319,26 @@ class PdfGenerate(APIView):
             pdf_file.write(pdf)
 
         buffer.close()
-        # response.write(pdf)
-        return Response({'success': 'Generate successfully'}, status=status.HTTP_200_OK, content_type='application/pdf')
-        # response['Content-Disposition'] = f'inline; filename="{email_hash}.pdf"'
+        
+        pdf_url = f"{settings.BASE_DIR}/media/pdf/{email_hash}.pdf"
+        pdf_content = {
+            'pdf_url': pdf_url,
+            'success': 'Generate successfully',
+        }
+        response = Response({'url': pdf_url}, status=status.HTTP_201_CREATED, content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="{email_hash}.pdf"'
+        return response
 
 class PdfReceive(APIView):
     def post(self, request: HttpResponse):
         data = request.data
-
         if not validate_fields(data['email']):
-            return Response({'error': 'field invalid'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'email invalid'}, status=status.HTTP_400_BAD_REQUEST)
 
         email_hash = sha256(data['email'].encode()).hexdigest()
-        file_path = os.path.join('pdf', f'{email_hash}.pdf')
+        file_path = os.path.join('media', 'pdf', f'{email_hash}.pdf')
         os.remove(file_path)
-        file_path_new = os.path.join('pdf', f'{email_hash}_assinatura.pdf')
+        file_path_new = os.path.join('media', 'pdf', f'{email_hash}_signature.pdf')
 
         buffer = BytesIO()
         p = canvas.Canvas(buffer, pagesize=letter)
@@ -402,3 +403,34 @@ class PdfReceive(APIView):
 
         buffer.close()
         return Response({'success': 'Subscription made successfully'}, status=status.HTTP_201_CREATED)
+
+# Get PDF
+class GetPdfUser(APIView):
+    def get(self, request: HttpResponse, email: str):
+        data = request.data
+        
+        if not validate_fields(email):
+            return Response({'error': 'email invalid'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        email_hash = sha256(email.encode()).hexdigest()
+        path_pdf = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{email_hash}.pdf')
+        path_pdf_signature = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{email_hash}_signature.pdf')
+        if os.path.exists(path_pdf):
+            with open(path_pdf, 'rb') as pdf_file:
+                content = {
+                    'pdf': pdf_file.read()
+                }
+                response = Response(content, status=status.HTTP_200_OK, content_type='application/pdf')
+                response['Content-Disposition'] = f'inline; filename="{email_hash}.pdf"'
+                return response
+        elif os.path.exists(path_pdf_signature):
+            with open(path_pdf_signature, 'rb') as pdf_file:
+                content = {
+                    'pdf': pdf_file.read()
+                }
+                response = Response(content, status=status.HTTP_200_OK, content_type='application/pdf')
+                response['Content-Disposition'] = f'inline; filename="{email_hash}_signature.pdf"'
+                return response
+        else:
+            return Response({'error': 'Pdf not found'}, status=status.HTTP_404_NOT_FOUND)
+        

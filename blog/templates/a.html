@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualizar PDF</title>
+</head>
+<body>
+    <h1>Visualização de PDF</h1>
+    <div id="pdf-container" width="100%" height="500"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userEmail = '{{ request.user.email }}';
+            const pdfUrl = `blog/media/pdf/${userEmail}/`;  // Certifique-se de que a extensão ".pdf" seja adicionada corretamente
+            const fullPdfUrl = `http://127.0.0.1:8000/${pdfUrl}`;  // Use o URL correto da sua aplicação
+
+            const pdfContainer = document.getElementById("pdf-container");
+
+            fetch(fullPdfUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const pdfBlob = URL.createObjectURL(blob);
+                    const embed = document.createElement("embed");
+                    embed.src = pdfBlob;
+                    embed.type = "application/pdf";
+                    embed.width = "100%";
+                    embed.height = "500";
+                    pdfContainer.appendChild(embed);
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar o PDF:", error);
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 from django.db import models
 from authentication.models import Users
-from volunteers.models import Volunteers
+from volunteers.models import NewMission
 
 
 class CrimeDenunciations(models.Model):
@@ -38,22 +38,19 @@ class MediaOng(models.Model):
     class Meta:
         verbose_name_plural = 'MediaOng'
 
-class NewMission(models.Model):
-    owner = models.ForeignKey(Users, on_delete=models.DO_NOTHING)
-    title = models.CharField(max_length=150)
-    description = models.TextField(max_length=500)
-    state = models.CharField(max_length=30)
-    city = models.CharField(max_length=30)
-    volunteers = models.ManyToManyField(Volunteers, blank=True, null=True)
-    concluded = models.BooleanField(default=False)
+class FinancialResources(models.Model):
+    empresa = models.CharField(max_length=40, default='Ong Green Earth')
+    title = models.CharField(max_length=100)
+    description = models.TextField(max_length=1000)
+    value = models.IntegerField()
 
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.owner.username
+        return self.empresa
     
     class Meta:
-        verbose_name_plural = 'NewMission'
+        verbose_name_plural = 'FinancialResources'
 
 class BlogPost(models.Model):
     image = models.ImageField(upload_to='image_blog')

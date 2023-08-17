@@ -30,5 +30,4 @@ class ActivateAccount:
         email_html = strip_tags(email_body)
         email = EmailMultiAlternatives(subject, email_html, settings.EMAIL_HOST_USER, to=[self._user.email])
         email.attach_alternative(email_body, 'text/html')
-        print('3')
         email.send()

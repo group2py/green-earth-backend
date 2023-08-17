@@ -4,4 +4,5 @@ from .models import *
 admin.site.register(MediaOng)
 admin.site.register(BlogPost)
 admin.site.register(NewMission)
+admin.site.register(FinancialResources)
 admin.site.register(CrimeDenunciations)
