@@ -22,8 +22,8 @@ urlpatterns = [
     path('media/<int:pk>/update/', GetMediaOng.as_view(), name='update_media'),
 
     # Financial Resources
-    path('financial/', ListFinancialResources.as_view(), name='list_financial_resources'),
-    path('create_financial/', CreateFinancialResources.as_view(), name='create_financial_resources'),
+    # path('financial/', ListFinancialResources.as_view(), name='list_financial_resources'),
+    # path('create_financial/', CreateFinancialResources.as_view(), name='create_financial_resources'),
 
     # Digital SIGNATURE
     path('pdf/generate/', PdfGenerate.as_view(), name='generate_pdf'),

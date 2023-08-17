@@ -32,11 +32,13 @@ class Users(AbstractUser):
     choice_gender = (
         ('F', 'Femenine'),
         ('M', 'Masculine'),
+        ('NB', 'Non binary'),
+        ('NI', 'Prefer not to inform')
     )
     username = models.CharField(max_length=150, unique=False, blank=True, null=True)
     email = models.EmailField(unique=True)
     image = models.ImageField(upload_to='image_profile', blank=True, null=True)
-    gender = models.CharField(max_length=1, choices=choice_gender, blank=True, null=True)
+    gender = models.CharField(max_length=2, choices=choice_gender, blank=True, null=True)
     phone = models.IntegerField(blank=True, null=True)
     recovery_email = models.EmailField(blank=True, null=True)
 

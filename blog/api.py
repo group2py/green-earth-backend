@@ -25,8 +25,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 # FILES APPS IMPORTS
 from .utils import validate_fields, check_image
-from .models import CrimeDenunciations, BlogPost, MediaOng, FinancialResources
-from .serializers import CrimeDenunciationsModelsSerializer, BlogPostModelsSerializer, MediaOngModelsSerializer, FinancialResourcesSerializer
+from .models import CrimeDenunciations, BlogPost, MediaOng#,FinancialResources
+from .serializers import CrimeDenunciationsModelsSerializer, BlogPostModelsSerializer, MediaOngModelsSerializer#, FinancialResourcesSerializer
 
 
 # LIST OBJECTS
@@ -48,11 +48,11 @@ class ListMediaOng(APIView):
         serializers = MediaOngModelsSerializer(users, many=True)
         return Response(serializers.data, status=status.HTTP_200_OK)
 
-class ListFinancialResources(APIView):
-    def get(self, request: HttpResponse):
-        users_financial = FinancialResources.objects.all()
-        serializers = FinancialResourcesSerializer(users_financial, many=True)
-        return Response(serializers.data, status=status.HTTP_200_OK)
+# class ListFinancialResources(APIView):
+#     def get(self, request: HttpResponse):
+#         users_financial = FinancialResources.objects.all()
+#         serializers = FinancialResourcesSerializer(users_financial, many=True)
+#         return Response(serializers.data, status=status.HTTP_200_OK)
 
 
 # CREATE OBJECTS
@@ -67,6 +67,7 @@ class CreateCrimeDenunciations(APIView):
         serializer = CrimeDenunciationsModelsSerializer(data=data)
         serializer.is_valid(raise_exception=True)
 
+        create_crime_denunciations = serializer.save()
         create_crime_denunciations = serializer.save()
         return Response({'success': 'Reported successfully!'}, status=status.HTTP_201_CREATED)
 
@@ -97,20 +98,20 @@ class CreateMediaOng(APIView):
         create_media_ong = serializer.save()
         return Response({'success': 'Media created successfully!'}, status=status.HTTP_201_CREATED)
 
-class CreateFinancialResources(APIView):
-    def post(self, request: HttpResponse):
-        data = request.data
+# class CreateFinancialResources(APIView):
+#     def post(self, request: HttpResponse):
+#         data = request.data
 
-        if not validate_fields(data['title'], data['description']):
-            return Response({'error': 'fields invalid'}, status=status.HTTP_400_BAD_REQUEST)
+#         if not validate_fields(data['title'], data['description']):
+#             return Response({'error': 'fields invalid'}, status=status.HTTP_400_BAD_REQUEST)
             
-        serializer = FinancialResourcesSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
+#         serializer = FinancialResourcesSerializer(data=data)
+#         serializer.is_valid(raise_exception=True)
 
-        create_financial_resources = serializer.save()
-        return Response({'success': 'Financial resources created successfully!'}, status=status.HTTP_201_CREATED)
+#         create_financial_resources = serializer.save()
+#         return Response({'success': 'Financial resources created successfully!'}, status=status.HTTP_201_CREATED)
 
-# PICK UP AN OBJECTS
+# # PICK UP AN OBJECTS
 class GetCrimeDenunciations(APIView):
     def get(self, request: HttpResponse, pk):
         denunciations = get_object_or_404(CrimeDenunciations, pk=pk)

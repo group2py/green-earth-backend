@@ -23,4 +23,3 @@ def verify_password(request: HttpResponse, password: str):
         return False
 
     return True
-
