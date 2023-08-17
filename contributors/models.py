@@ -16,7 +16,7 @@ class Contributors(models.Model):
         verbose_name_plural = 'Contributors'
 
 class ContributionHistory(models.Model):
-    user = models.ForeignKey(Contributors, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(Contributors, on_delete=models.DO_NOTHING)#seria bom mudar o nome de user para contributor
     company = models.CharField(max_length=150)
     value = models.IntegerField()
 
