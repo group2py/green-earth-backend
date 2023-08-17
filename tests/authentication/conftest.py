@@ -16,31 +16,31 @@ from selenium.webdriver import Chrome
 #django
 from django.shortcuts import get_object_or_404
 from django.test import Client
-#authentication_factory
-from tests.authentication.authentication_factory import UserFactory, register_user_in_the_database
-# from tests.volunteers.volunteer_factory import register_volunteer_in_database
 
-
+#image
+from django.core.files.uploadedfile import SimpleUploadedFile
+from core import settings
+import json
 @pytest.fixture
 def user_data():
-    # faker = Faker('pt_BR')
-    # image_path = os.path.join(settings.BASE_DIR, "static","authentication",  'img', 'profile.png')
-    # data_image = SimpleUploadedFile(name='livros.png', content=open(image_path, 'rb').read(),content_type='image/png')
+    faker = Faker('pt_BR')
+    image_path = os.path.join(settings.BASE_DIR, "static","authentication",  'img', 'profile.png')
+    data_image = SimpleUploadedFile(name='livros.png', content=open(image_path, 'rb').read(),content_type='image/png')
 
-    # data =  {
-    #     "username": faker.name(),
-    #     "email": faker.email(),
-    #     "image":data_image,
-    #     "phone": 9989122819,
-    #     "password": "Aa12aZ3352345&@%",
-    #     "gender": "M",
-    #     "first_name":faker.name(),
-    #     "last_name":faker.name(),
-    #     "recovery_email": faker.email()
-    # }
-    data = UserFactory.create()
+    data =  {
+        "username": faker.name(),
+        "email": faker.email(),
+        "image":data_image,
+        "phone": 998912819,
+        "password": "Aa12aZ3352345&@%",
+        "gender": "M",
+        "first_name":faker.name(),
+        "last_name":faker.name(),
+        "recovery_email": faker.email(),
+        "last_login":faker.date_time()   
+    }
 
-    return data.__dict__
+    return data
 
 
 @pytest.fixture
@@ -59,12 +59,15 @@ def client():
     client = Client()    
     return client
 
-@pytest.mark.django_db
+# @pytest.mark.django_db
 @pytest.fixture
-def user_created():
-    # client.post("/auth/register/", data=user_data)
-    # user = get_object_or_404(Users, email=user_data['email'][0])
+def user_created(client, user_data):
 
-    user = register_user_in_the_database()
+    print(client.post("/auth/register/", data=user_data))
+
+    
+    user = get_object_or_404(Users, email=user_data['email'])
+
+    
     return user
 

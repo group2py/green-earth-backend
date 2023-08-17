@@ -6,7 +6,7 @@ sys.path.append(parent_path)
 from volunteers.models import Volunteers
 
 # User Factory
-from tests.authentication.authentication_factory import register_user_in_the_database
+from tests.authentication.authentication_factory import register_user_in_the_database, UserFactory
 #Factory Boy
 from factory import Factory
 # faker
@@ -44,7 +44,9 @@ class VolunteerFactory(Factory):
     class Meta:
         model=VolunteerModel
 
-    user = register_user_in_the_database()#ta dando problema nessa linha, pelo que entendi ele não está recebendo a permissão do "@pytest.mark.django_db"
+    user = UserFactory.create()
+    #ta dando problema nessa linha, pelo que entendi ele não está recebendo a permissão do "@pytest.mark.django_db"
+    user = user.__dict__
     help = faker.text() 
     created = faker.date_time()
 

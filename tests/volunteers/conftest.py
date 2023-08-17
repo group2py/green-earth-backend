@@ -2,17 +2,17 @@ import pytest
 #adding path to parent directory
 import os
 import sys
-parent_path = os.path.join(os.path.abspath('__path__'),'..', '..')
+parent_path = os.path.join(os.path.abspath('__path__'),'..')
 sys.path.append(parent_path)
 
-from authentication.models import Users
+# from authentication.models import Users
 #faker
 from faker import Faker
 #selenium
 from time import sleep
 from selenium.webdriver import Chrome
     # from selenium.webdriver.common.by import By
-from tests.authentication.authentication_factory import register_user_in_the_database
+from authentication.authentication_factory import register_user_in_the_database
 
 #django
 from django.shortcuts import get_object_or_404
