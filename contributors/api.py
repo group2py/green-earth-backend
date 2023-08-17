@@ -89,7 +89,7 @@ class GetContributors(APIView):
 
 # DELETE OBJECTS
 class DeleteContributors(APIView):
-    def destroy(self, request: HttpResponse, pk):
+    def delete(self, request: HttpResponse, pk):#eu renomeiei para delete
         contributors = get_object_or_404(Contributors, pk=pk)
 
         if isinstance(contributors, Contributors):

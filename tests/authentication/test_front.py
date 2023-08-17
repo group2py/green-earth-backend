@@ -3,7 +3,14 @@ from time import sleep
 import pytest
 
 
+import os
+import sys
+parent_path = os.path.join(os.path.abspath('__path__'), '..','..')
+sys.path.append(parent_path)
+from authentication.models import Users
+
 @pytest.mark.selenium
+@pytest.mark.django_db
 def test_registers_user_with_selenium_then_must_go_to_login(browser, user_data):
     browser.find_element(by=By.XPATH, value='//*[@id="navbarNavDropdown"]/ul/li[2]/a').click()
     sleep(3)
@@ -33,3 +40,23 @@ def test_registers_user_with_selenium_then_must_go_to_login(browser, user_data):
 # "/html/body/div/div[1]/div/form/div/div/div[3]/input"
 #'//*[@id="root"]/div[1]/div/form/div/div/div[4]/input'
 #'//*[@id="1"]/div[1]/div[2]'
+# @pytest.mark.teste
+
+# AVISO -> É necessário criar um usuário com o email "admin@admin.com" e senha "Admin123!" para o teste abaixo funcionar, crie um novo usuário ou altere esses dados
+@pytest.mark.selenium
+@pytest.mark.django_db
+def test_login_the_user_then_must_go_to_the_dashboard(browser):
+    browser.find_element(by=By.XPATH, value='//*[@id="navbarNavDropdown"]/ul/li[3]/a').click()
+    sleep(2)
+    browser.find_element(by=By.XPATH, value='//*[@id="root"]/div[1]/div/form/div/div/input').send_keys("admin@admin.com")
+    browser.find_element(by=By.XPATH, value='//*[@id="root"]/div[1]/div/form/div/div/div[2]/input').send_keys("Admin123!")
+    browser.find_element(by=By.XPATH, value='//*[@id="root"]/div[1]/div/form/div/div/div[3]/input').click()
+    sleep(2)
+    assert browser.current_url == "https://courageous-jalebi-621420.netlify.app/dashboard"   
+
+    
+
+    #//*[@id="navbarNavDropdown"]/ul/li[3]/a
+    #//*[@id="root"]/div[1]/div/form/div/div/input
+    #//*[@id="root"]/div[1]/div/form/div/div/div[2]/input
+    #//*[@id="root"]/div[1]/div/form/div/div/div[3]/input
