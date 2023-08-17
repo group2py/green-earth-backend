@@ -33,26 +33,24 @@ class ListContributionHistory(APIView):
 # CREATE OBJECTS
 class CreateContributors(APIView):
    def post(self, request: HttpResponse, *args: Any, **kwargs: Any):
-        queryset = self.filter_queryset(self.get_queryset())
-        data = request.data
-
-        if not validate_fields(data['company'], data['value']):
-            return Response({'error': 'Fields invalids'}, status=status.HTTP_400_BAD_REQUEST)
-
-        serializers = ContributionHistoryModelsSerializer(data=data)
-        serializers.is_valid(raise_exception=True)
-        create_contributors_history = serializers.save()
-        return Response({'success': 'Contribution made successfully!'}, status=status.HTTP_201_CREATED) 
-
-class CreateContributionHistory(APIView):
-    def post(self, request: HttpResponse):
-        queryset = self.filter_queryset(self.get_queryset())
         data = request.data
 
         if not validate_fields(data['company'], data['description']):
             return Response({'error': 'Fields invalids'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializers = ContributorsModelsSerializer(data=data)
+        serializers.is_valid(raise_exception=True)
+        create_contributors_history = serializers.save()
+        return Response({'success': 'Contribution made successfully!'}, status=status.HTTP_201_CREATED) 
+
+class CreateContributionHistory(APIView):
+    def post(self, request: HttpResponse):
+        data = request.data
+
+        if not validate_fields(data['company'], data['value']):
+            return Response({'error': 'Fields invalids'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializers = ContributionHistoryModelsSerializer(data=data)
         serializers.is_valid(raise_exception=True)
         create_contributors = serializers.save()
         return Response({'success': 'Partnership made successfully. Thanks for your donation!'}, status=status.HTTP_201_CREATED)
@@ -65,7 +63,7 @@ class GetContributionHistory(APIView):
 
         if isinstance(contributors_history, ContributionHistory):
             response = {
-                    'user': contributors.user,
+                    'user': contributors_history.user,
                     'company': contributors_history.company,
                     'value': contributors_history.value,
                 }
