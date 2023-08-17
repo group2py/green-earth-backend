@@ -29,3 +29,4 @@ urlpatterns = [
     path('pdf/generate/', PdfGenerate.as_view(), name='generate_pdf'),
     path('pdf/receive/', PdfReceive.as_view(), name='receive_pdf'),
 ]
+

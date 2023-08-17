@@ -68,6 +68,7 @@ class CreateCrimeDenunciations(APIView):
         serializer.is_valid(raise_exception=True)
 
         create_crime_denunciations = serializer.save()
+        create_crime_denunciations = serializer.save()
         return Response({'success': 'Reported successfully!'}, status=status.HTTP_201_CREATED)
 
 class CreateBlogPost(APIView):
