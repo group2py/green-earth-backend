@@ -68,7 +68,7 @@ def test_cadastra_usuario_invalido_entao_deve_retornar_400(client):
 
 
 
-@pytest.mark.skip(reason='Está retornando o erro 415, ignorar por enquanto')
+@pytest.mark.skip(reason='Está retornando o erro 415,ignorar por enquanto')
 @pytest.mark.django_db
 def test_user_update_deve_retornar_200(client, user_data,user_created):
     response = client.put(f'/auth/users/{user_created.id}/update/', data=user_data)
