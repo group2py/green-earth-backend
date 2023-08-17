@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            border: 2px solid rgb(60, 97, 5);
+            background-color: #2d6a4f;
+            border-radius: 5%;
+            font-family: Arial, sans-serif;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .sub-header {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .section-content {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .cta-button {
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            Green Earth
+        </div>
+        <div class="sub-header">
+            Stay connected with the latest updates and initiatives focused on preserving our planet.
+        </div>
+        <div class="image-container">
+            <img src="https://static.significados.com.br/foto/meio-ambiente-fb.jpg" alt="Environment">
+        </div>
+
+        <div class="section-title">
+            Mission {{mission.title}}
+        </div>
+        <div class="section-content">
+            <p>Help us achieve our goals by participating in these missions:</p>
+            
+            <ul>
+                <li>Owner: {{mission.owner}}.</li>
+                <li>Title: {{mission.title}}.</li>
+                <li>Description: {{mission.description}}.</li>
+                <li>State: {{mission.state}}.</li>
+                <li>City: {{mission.city}}.</li>
+            </ul>
+        </div>
+
+        <div class="section-title">
+            Thank {{username}} You for Your Support!
+        </div>
+        <div class="section-content">
+            <p>We appreciate your dedication and contributions to a greener planet. Together, we can make a difference!</p>
+        </div>
+
+        <div class="footer">
+            To unsubscribe from our newsletter, <a href="#">click here</a>.
+        </div>
+    </div>
+</body>
+
+</html>

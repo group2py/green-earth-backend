@@ -1,0 +1,18 @@
+# E-mail
+EMAIL_HOST_USER=chatonlineproject@gmail.com
+EMAIL_HOST_PASSWORD=wgbdndqdvvqboqcf
+EMAIL_USE_TLS=True
+EMAIL_PORT=587
+EMAIL_HOST=smtp.gmail.com
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+
+# Domain
+DOMAIN=127.0.0.1:8000
+
+# SECRET JWT USER
+SECRET_KEY_JWT=2fs&5ug*bn1@^ii^xph&xwy3+ex33ewhewp$^weiondi0g3n2
+
+# SECRET DJANGO
+SECRET_KEY=django-insecure-&%adwc^j=d-geavt&00&5c1)1!g+jrzq6zfo1mhi1m4v!0jv@m
+
+DEBUG=True
