@@ -10,7 +10,7 @@ def test_create_contributors_then_should_return_201(client, contributors_data):
     requisicao = client.post('/contributors/create_contributors/', data=contributors_data)
     assert requisicao.status_code == 201
 
-@pytest.mark.skip(reason='A requisição não pode ser feita, porque Object of type Users is not JSON serializable')
+@pytest.mark.skip(reason='A requisição não pode ser feita, porque está tentado retornar um objeto users e objetos do tipo Users não são JSON serializable')
 @pytest.mark.django_db
 def test_get_contributor_then_should_return_200(client,contributors_created):
 
