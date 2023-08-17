@@ -49,10 +49,6 @@ class Users(AbstractUser):
 
     def __str__(self):
         return self.email
-    
-    def save(self, *args, **kwargs):
-        self.image = 'static/authentication/img/profile.png'
-        super(Users, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'Users'

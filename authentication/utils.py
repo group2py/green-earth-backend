@@ -19,7 +19,8 @@ def verify_password(request: HttpResponse, password: str):
     if not re.search('[0-9]', password):
         return False
     
-    if not re.search('[@, &, %, $, #, *]', password):
+    if not re.search('[!,@,#,$,%,¨,&,*,+,-,.]', password):
         return False
 
     return True
+

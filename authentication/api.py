@@ -21,7 +21,6 @@ from .backends import CustomBackends
 from .serializers import UsersModelsSerializer
 from .utils import validate_fields, verify_password
 
-
 # Create token user jwt
 def create_token(user_id: int) -> str:
     payload = dict(
@@ -58,10 +57,10 @@ class RegisterUser(APIView):
                 {'error': 'password invalid'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+    
         serializer = UsersModelsSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+        serializer.save()
 
         return Response(
             {'success': 'Account created successfully'},
@@ -76,6 +75,7 @@ class UserDetails(APIView):
         if isinstance(user, Users):
             response = {
                 'id': user.id,
+                'image': user.image or None,
                 'username': user.username,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
@@ -95,7 +95,6 @@ class UserDetails(APIView):
             )
 
 class UserUpdate(APIView):
-
     def get(self, request: HttpResponse, pk):
         user = get_object_or_404(Users, pk=pk)
         serializer = UsersModelsSerializer(user)
@@ -115,35 +114,17 @@ class UserUpdate(APIView):
                     {'error': 'fields invalids'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-
-            user.username = data['username']
-            user.first_name = data['first_name']
-            user.last_name = data['last_name']
-            user.email = data['email']
-            user.password = data['password']
+            image = request.FILES['image']
+            user.image = image
+            user.username = data['first_name']
+            user.first_name = data['first_name'] or user.first_name
+            user.last_name = data['last_name'] or user.last_name
             user.gender = data['gender']
-            user.phone = data['phone']
-            user.recovery_email = data['recovery_email']
+            user.phone = data['phone'] or user.phone
+            user.recovery_email = data['recovery_email'] or user.recovery_email
             user.save()
             return Response(
                 {'success': 'successfully changed data'},
-                status=status.HTTP_200_OK
-            )
-        else:
-            return Response(
-                {'instance error': 'User does not instance of Users'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-class UserDelete(APIView):
-
-    def delete(self, request: HttpResponse, pk, *args, **kwargs):
-        user = get_object_or_404(Users, pk=pk)
-
-        if isinstance(user, Users):
-            user.delete()
-            return Response(
-                {'success': 'User deleted successfully'},
                 status=status.HTTP_200_OK
             )
         else:

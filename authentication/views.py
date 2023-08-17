@@ -19,6 +19,6 @@ def send_email(path_template: str, assunto: str, para: list, **kwargs) -> dict:
 
 def t(request):
     user = get_object_or_404(Users, pk=request.user.pk)
-    path_template = os.path.join(settings.BASE_DIR, 'authentication/templates/emails/marketing.html')
+    path_template = os.path.join(settings.BASE_DIR, 'authentication/templates/emails/mission.html')
     send_email(path_template, f"Hello {user.username}, Do you need to study programming?", [user.email,])
-    return render(request, 'emails/marketing.html')
+    return render(request, 'emails/mission.html')

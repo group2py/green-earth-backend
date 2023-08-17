@@ -22,11 +22,16 @@ urlpatterns = [
     path('media/<int:pk>/update/', GetMediaOng.as_view(), name='update_media'),
 
     # Financial Resources
-    # path('financial/', ListFinancialResources.as_view(), name='list_financial_resources'),
-    # path('create_financial/', CreateFinancialResources.as_view(), name='create_financial_resources'),
+    path('financial/', ListFinancialResources.as_view(), name='list_financial_resources'),
+    path('create_financial/', CreateFinancialResources.as_view(), name='create_financial_resources'),
 
     # Digital SIGNATURE
     path('pdf/generate/', PdfGenerate.as_view(), name='generate_pdf'),
     path('pdf/receive/', PdfReceive.as_view(), name='receive_pdf'),
+    path('pdf/get/<str:email>/', GetPdfUser.as_view(), name='pdf_get'),
+    # path('gerar_pdf/', views.gerar_pdf, name="gerar_pdf"),
+    # path('receber_pdf/', views.receber_pdf, name="receber_pdf"),
+    # path('t/', views.t, name="t"),
+    # path('media/pdf/<str:email>/', views.public_pdf_view, name='pdf_view'),
 ]
 
